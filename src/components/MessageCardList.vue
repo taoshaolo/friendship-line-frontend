@@ -17,9 +17,16 @@
 <script lang="ts" setup>
 import {useRouter} from "vue-router";
 import {MessageType} from "../models/message";
+import {getCurrentUser} from "../services/user";
+import {onMounted, ref} from "vue";
 
 
+const currentUser = ref<any>();
 const router = useRouter();
+
+onMounted(async () => {
+  currentUser.value = await getCurrentUser();
+})
 
 interface MessageCardListProps {
     message: MessageType,
@@ -34,13 +41,14 @@ const props = withDefaults(defineProps<MessageCardListProps>(), {
 });
 
 
+
 const toMessagePage = () => {
     console.log("props.message-----", props.message)
     router.push({
         name: "userChat",
         params: {
             // toUserId: props.message.receiveType === 1 ? props.message.receiveUserId : props.message.sendUserId,
-            toUserId: props.message.receiveType === 1 ? props.message.teamId : props.message.sendUserId,
+            toUserId: props.message.receiveType === 1 ? props.message.teamId : (currentUser.value.id === props.message.sendUserId ? props.message.receiveUserId :props.message.sendUserId),
             receiveType: props.message.receiveType,
             status: 0
         }

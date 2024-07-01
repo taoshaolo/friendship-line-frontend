@@ -49,7 +49,7 @@ const routes = [
         component: UserChatPage
     },
 
-    {path: '/search', title: '寻找小伙伴', component: SearchPage},
+    {path: '/search', title: '搜索标签', component: SearchPage},
     {path: '/message', title: '消息', component: MessagePage}
 ];
 
